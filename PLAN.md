@@ -161,7 +161,7 @@ The exact current parameters (e.g. token limits, model names) are verified again
 - **Do not set a `connect-src` rule** in `content_security_policy`: it also applies to the background script and would block dynamically added media servers.
 - The background is an **event page** (`"background": {"scripts": [...]}`), not a service worker. Firefox terminates it after about 30 s without events, even if a `fetch` is still running. Countermeasure: keep-alive messages from the content script.
 - Content script logs appear in the page console (F12; enable "Show Content Scripts" in the debugger settings). Background logs appear under `about:debugging` → extension → **Inspect**. Open DevTools keep the event page alive and distort tests of timing issues.
-- Temporarily loaded and signed installed versions have **separate** settings and permissions.
+- Temporarily loaded and signed installed versions share the extension ID, and with it settings and permissions: installing the signed `.xpi` while the temporary copy is loaded replaces it and keeps the settings (tested 2026-10-09). Removing an extension first deletes its settings.
 - Release builds of Firefox only install extensions signed by Mozilla.
 
 ### Testing and signing

@@ -5,3 +5,6 @@ CLAUDE.local.md
 dist/
 web-ext-artifacts/
 node_modules/
+
+# Created by web-ext sign to resume an upload
+.amo-upload-uuid

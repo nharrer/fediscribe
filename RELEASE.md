@@ -12,6 +12,8 @@ The account that signs the first version owns the extension ID `fediscribe@netzg
 
 ## Releasing a version
 
+In all commands below, replace `X.Y.Z` with the actual version number, e.g. `0.1.0`.
+
 ### 1. Set the version number
 
 Raise `version` in **both** `manifest.json` and `package.json` (they must match). AMO accepts every version number only once, so even a failed or discarded signing uses up that number.
@@ -44,22 +46,35 @@ export WEB_EXT_API_KEY WEB_EXT_API_SECRET
 npx -y web-ext@8 sign --source-dir . --artifacts-dir dist --channel unlisted
 ```
 
-AMO validates the package automatically; this usually takes a few minutes, occasionally longer. The signed file is written to `dist/`, e.g. `dist/fediscribe-X.Y.Z.xpi`. `dist/` is ignored by Git.
+AMO validates the package automatically; this usually takes a few minutes, occasionally longer. The signed file is written to `dist/`. Its name is derived from the add-on's AMO ID, not from the extension name (e.g. `dist/480989ee4a104d7f959e-X.Y.Z.xpi`); rename it for distribution:
+
+```zsh
+mv dist/*-X.Y.Z.xpi dist/fediscribe-X.Y.Z.xpi
+```
+
+`dist/` is ignored by Git. `web-ext sign` also creates `.amo-upload-uuid` in the project directory, so that a repeated attempt can reuse the same upload; it is ignored by Git as well.
 
 Development files are excluded from the package via `webExt.ignoreFiles` in `package.json` (tests, `PLAN.md`, `RELEASE.md`, `package.json`, …). `LICENSE` is included. Check the list there when adding new development files.
 
 If signing fails, the output names the reason (validation error, version already used, wrong credentials). Fix it, raise the version if it was already uploaded, and sign again.
 
-### 5. Install
+### 5. Publish on GitHub
+
+```zsh
+git push origin master vX.Y.Z
+gh release create vX.Y.Z dist/fediscribe-X.Y.Z.xpi --title "Fediscribe X.Y.Z" --notes "…"
+```
+
+### 6. Install
 
 1. In Firefox: `about:addons` → gear icon → *Install Add-on From File…* → select the `.xpi`.
-2. If a temporarily loaded copy is still active, remove it in `about:debugging`. Also disable any other extension that adds an alt-text button to the same dialog, otherwise two buttons appear.
+2. Disable any other extension that adds an alt-text button to the same dialog, otherwise two buttons appear.
 
-On the first installation, enter the settings again: the installed extension has its own settings and permissions, separate from a temporarily loaded copy. Later versions installed over it keep their settings.
+Install over the existing version; **do not remove it first**. The new version replaces the installed one, or a temporarily loaded copy (same extension ID), and keeps settings and permissions. Removing the extension deletes its settings.
 
 ## Updates
 
-Firefox does not update unlisted extensions automatically. For every new version, repeat steps 1–5; installing the new `.xpi` replaces the old version and keeps the settings.
+Firefox does not update unlisted extensions automatically. For every new version, repeat steps 1–6; installing the new `.xpi` replaces the old version and keeps the settings.
 
 Automatic updates would need either an `update_url` in the manifest pointing to a self-hosted update manifest, or the public AMO listing.
 
