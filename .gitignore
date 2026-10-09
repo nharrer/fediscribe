@@ -1,0 +1,7 @@
+# Personal, machine-specific agent instructions
+CLAUDE.local.md
+
+# Build output and dependencies
+dist/
+web-ext-artifacts/
+node_modules/
