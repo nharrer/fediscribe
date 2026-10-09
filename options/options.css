@@ -1,0 +1,269 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+
+:root {
+    color-scheme: light dark;
+    --bg: #f6f6fa;
+    --surface: #ffffff;
+    --text: #1f1f2b;
+    --muted: #5f5f73;
+    --border: #d4d4de;
+    --accent: #6364ff;
+    --accent-text: #ffffff;
+    --error: #c42b45;
+    --success: #1f7a43;
+    --warning-bg: #fff4d6;
+    --warning-text: #6b4b00;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #17171f;
+        --surface: #22222d;
+        --text: #ececf3;
+        --muted: #a5a5b8;
+        --border: #3a3a4a;
+        --accent: #8c8dff;
+        --accent-text: #0d0d14;
+        --error: #ff7a8f;
+        --success: #6fd49a;
+        --warning-bg: #3a3014;
+        --warning-text: #ffd98a;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.5 system-ui, sans-serif;
+}
+
+main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+h2 {
+    margin: 0 0 8px;
+    font-size: 1.15rem;
+}
+
+section {
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.notice {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+.field {
+    margin-top: 14px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+label.inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: normal;
+    margin: 0;
+    white-space: nowrap;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+    width: 100%;
+    min-width: 0;
+    padding: 7px 9px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+}
+
+input[type="number"] {
+    width: 8em;
+}
+
+.row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.row > input,
+.row > select {
+    flex: 1 1 240px;
+    width: auto;
+}
+
+.combobox {
+    position: relative;
+    flex: 1 1 240px;
+}
+
+.combobox-list {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    max-height: 320px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.18);
+}
+
+.combobox-list li {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.combobox-list li[aria-selected="true"],
+.combobox-list li[role="option"]:hover {
+    background: var(--accent);
+    color: var(--accent-text);
+}
+
+.combobox-id {
+    overflow-wrap: anywhere;
+}
+
+.combobox-name {
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+.combobox-list li.combobox-empty {
+    color: var(--muted);
+    cursor: default;
+}
+
+button {
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+}
+
+button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: progress;
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.hint {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.warning {
+    color: var(--error);
+    font-size: 0.9rem;
+}
+
+.panel {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+}
+
+.panel p:first-child {
+    margin-top: 0;
+}
+
+.server-list {
+    list-style: none;
+    margin: 8px 0;
+    padding: 0;
+}
+
+.server-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.server-list li .buttons {
+    margin-top: 0;
+}
+
+.status {
+    min-height: 1.5em;
+    margin: 8px 0 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.status[data-kind="error"] {
+    color: var(--error);
+}
+
+.status[data-kind="success"] {
+    color: var(--success);
+}
+
+.saved {
+    position: fixed;
+    right: 16px;
+    bottom: 8px;
+    margin: 0;
+}

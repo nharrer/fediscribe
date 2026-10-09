@@ -24,6 +24,7 @@ Non-goals: other platforms (Bluesky, Facebook, …), telemetry.
 | Images on a separate media server (e.g. `assets.example.social`) are blocked by CORS | Images are always loaded in the background script. The media server is detected automatically when adding a server, and its permission is requested along with it. |
 | Firefox terminates the background script during slow API calls ("Extension was reloaded") | Keep-alive signals during the request, plus a timeout with a clear message. |
 | Mastodon renders the dialog asynchronously; timing-based detection misses it | A `MutationObserver` runs from page start. The dialog is detected via Mastodon's DOM structure, not via (translated) texts. |
+| Provider APIs change their response format, or answer with an error object despite HTTP 200 | All response fields are read defensively (`asArray`/`asObject`/`asString`/`asCount` in `providers/common.js`); unexpected data ends in a clear error message, never a crash. Usage data is optional and can never cost the generated text. A fuzz test (`tests/robustness.test.js`) feeds every parser with malformed responses. |
 | Swallowed errors make problems impossible to diagnose | Errors are shown with their cause and logged with the prefix `[Fediscribe]`. |
 
 ## Architecture
@@ -33,13 +34,19 @@ fediscribe/
 ├── manifest.json          MV3, Firefox (gecko)
 ├── background.js          Message routing, image download, API calls, content script registration
 ├── providers/
+│   ├── index.js           Registry: provider ID → module
+│   ├── common.js          HTTP request, error mapping, shared helpers
 │   ├── openai.js          generate(), listModels()
 │   ├── anthropic.js
 │   ├── gemini.js
 │   └── openrouter.js
 ├── shared/
-│   ├── settings.js        Load/save (browser.storage.local), defaults
-│   ├── prompt.js          Prompt text depending on the language
+│   ├── settings.js        Load/save (browser.storage.local), defaults, domain normalization
+│   ├── search.js          Search-as-you-type matching for the model list
+│   ├── prompt.js          Prompt text depending on the language, text cleanup/truncation
+│   ├── image.js           Base64, type detection, downscaling
+│   ├── mastodon.js        Server check and media server detection
+│   ├── errors.js          Error class with machine-readable code (mapped to a UI text)
 │   ├── i18n.js            Fill in translated texts for elements with data-i18n attributes
 │   └── log.js             Logging with prefix
 ├── content/
@@ -47,11 +54,12 @@ fediscribe/
 │   └── content.css
 ├── options/               Settings page
 │   ├── options.html
+│   ├── combobox.js        Searchable drop-down field (model selection)
 │   ├── options.js
 │   └── options.css
 ├── _locales/
 │   └── en/messages.json   All UI strings (default and, for now, only locale)
-├── icons/
+├── icons/               fediscribe.svg, fediscribe-small.svg (simplified, for 16/32 px)
 ├── tests/                 node --test for pure functions (request building, response parsing, URL normalization)
 ├── package.json           Dev tools only: web-ext (lint/build/sign)
 ├── LICENSE                GPL-3.0
@@ -68,9 +76,13 @@ fediscribe/
 4. The **background script** downscales the image if needed, calls the selected provider with the selected model, and returns the text or an error.
 5. The content script fills the text into the text field in a way that Mastodon's React code picks up the change (native setter + `input` event). Existing text is only overwritten after confirmation.
 
+### Info popup
+
+An info button (ⓘ) next to "Generate alt text" opens a popup on hover (pinned by click, closed by Escape or a click outside). It shows the current provider, model and language (for "Automatic", the language that would be used for this post) and details of the last request since the browser was started: time, model that answered (if reported differently), upstream provider (OpenRouter), duration, input and output tokens (incl. reasoning tokens), cost (OpenRouter only; the other APIs do not report it), size of the image sent and length of the alt text, or the error. The background script stores the last request in `browser.storage.session`; each provider module normalizes its usage data in `parseUsage()`.
+
 ### Adding a Mastodon server (settings page)
 
-1. The user enters the domain (e.g. `example.social`); it is normalized.
+1. The user picks a server from an editable drop-down list or types any domain; it is normalized. The list holds the 100 servers with the most active users from the joinmastodon.org directory (`https://api.joinmastodon.org/servers`, CORS-enabled), with `oldbytes.space` pinned at second place. It is loaded when the settings page opens (not on focus: Firefox does not open the drop-down by itself when the list arrives after the click) and cached for 24 hours in `browser.storage.local`. The check (steps 2–3) runs automatically after picking or typing, so that the "Add server" click can request the permissions directly (step 4).
 2. Check whether it is a Mastodon server (`/api/v2/instance`).
 3. Detect the media server: read a media URL of a public post from `/api/v1/timelines/public?local=true&only_media=true`. If none is available, let the user enter the media server manually.
 4. `browser.permissions.request()` for the server and the media server. This is only possible from the settings page, because Firefox requires a user action for it.
@@ -81,8 +93,8 @@ fediscribe/
 - **Mastodon servers:** list with add/remove, including media server
 - **Provider:** OpenAI / Anthropic / Gemini / OpenRouter
 - **API key** per provider (stored locally in `browser.storage.local`)
-- **Model:** dropdown (loaded live from the provider, filtered by image capability where the API provides it) and free-text field
-- **Language** of the alt text: German, English, … or "same as the Mastodon interface"
+- **Model:** one searchable field (search as you type over model ID and name; all words must match, in any order) with a drop-down list loaded live from the provider (filtered by image capability where the API provides it). Any other model ID can be typed in freely.
+- **Language** of the alt text: German, English, … or "Automatic": the post language (`lang` attribute of the dialog's text field, set from the compose form's language selection), otherwise the Mastodon interface language (`lang` of the document element), otherwise English
 - **"Test connection" button:** sends a small test image to the provider
 - **Debug logging** on/off (default: info messages on)
 
@@ -118,7 +130,7 @@ The exact current parameters (e.g. token limits, model names) are verified again
 4. Settings page: add server incl. media server detection and permissions, provider/key/model, language, connection test.
 5. Content script: verify dialog detection against the real Mastodon DOM (web interface and `/publish`), button, filling in text.
 6. Manual tests on a real Mastodon server with a separate media server, with all four providers.
-7. README, `web-ext build`, signing (unlisted).
+7. README, `web-ext build`, signing (unlisted). Procedure: `RELEASE.md`.
 
 ## Decisions
 
@@ -157,7 +169,7 @@ The exact current parameters (e.g. token limits, model names) are verified again
 ```zsh
 # Lint and tests
 npx -y web-ext@8 lint --source-dir .
-node --test tests/
+node --test
 
 # Load temporarily: about:debugging#/runtime/this-firefox → "Load Temporary Add-on…" → manifest.json
 

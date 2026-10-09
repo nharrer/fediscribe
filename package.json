@@ -1,0 +1,30 @@
+{
+  "name": "fediscribe",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Firefox extension that generates Mastodon alt texts with AI. This file only holds development tooling.",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "lint": "web-ext lint --source-dir .",
+    "build": "web-ext build --source-dir . --artifacts-dir dist --overwrite-dest"
+  },
+  "devDependencies": {
+    "web-ext": "^8.0.0"
+  },
+  "webExt": {
+    "ignoreFiles": [
+      "tests",
+      "dist",
+      "web-ext-artifacts",
+      "node_modules",
+      "package.json",
+      "package-lock.json",
+      "PLAN.md",
+      "RELEASE.md",
+      "CLAUDE.md",
+      "CLAUDE.local.md"
+    ]
+  }
+}

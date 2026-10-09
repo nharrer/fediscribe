@@ -1,0 +1,594 @@
+{
+  "extensionName": {
+    "message": "Fediscribe",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Generates alt texts (image descriptions) for Mastodon with AI (OpenAI, Anthropic, Google Gemini or OpenRouter).",
+    "description": "Description of the extension shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "Fediscribe settings",
+    "description": "Tooltip of the toolbar button, which opens the settings."
+  },
+  "buttonGenerate": {
+    "message": "Generate alt text",
+    "description": "Button in Mastodon's alt-text dialog that generates the image description."
+  },
+  "buttonGenerateTitle": {
+    "message": "Describe this image with AI (Fediscribe)",
+    "description": "Tooltip of the generate button in Mastodon's alt-text dialog."
+  },
+  "buttonGenerating": {
+    "message": "Generating…",
+    "description": "Label of the generate button while the AI is working."
+  },
+  "confirmOverwrite": {
+    "message": "The text field already contains text. Replace it with a generated alt text?",
+    "description": "Confirmation before an existing alt text is overwritten."
+  },
+  "infoButtonLabel": {
+    "message": "Fediscribe: model and last request",
+    "description": "Tooltip and accessible label of the info button next to the generate button."
+  },
+  "infoCurrentHeading": {
+    "message": "Current settings",
+    "description": "Heading in the info popup."
+  },
+  "infoProvider": {
+    "message": "Provider",
+    "description": "Info popup row label: AI provider."
+  },
+  "infoModel": {
+    "message": "Model",
+    "description": "Info popup row label: configured model."
+  },
+  "infoModelNotSet": {
+    "message": "Not set",
+    "description": "Info popup: no model configured."
+  },
+  "infoLanguage": {
+    "message": "Language",
+    "description": "Info popup row label: language of the alt text."
+  },
+  "infoLanguageAuto": {
+    "message": "Automatic (now: $LANGUAGE$)",
+    "description": "Info popup: language setting is Automatic; the placeholder is the language that would be used for this post.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "English"
+      }
+    }
+  },
+  "infoLastHeading": {
+    "message": "Last request",
+    "description": "Heading in the info popup for details of the last request."
+  },
+  "infoNoRequest": {
+    "message": "No alt text generated since the browser was started.",
+    "description": "Info popup: no request was made yet."
+  },
+  "infoTime": {
+    "message": "Time",
+    "description": "Info popup row label: time of the last request."
+  },
+  "infoResult": {
+    "message": "Result",
+    "description": "Info popup row label: error of the last request."
+  },
+  "infoModelUsed": {
+    "message": "Answered by",
+    "description": "Info popup row label: model ID reported in the response, if it differs from the configured one."
+  },
+  "infoUpstream": {
+    "message": "Served by",
+    "description": "Info popup row label: upstream provider that served an OpenRouter request."
+  },
+  "infoDuration": {
+    "message": "Duration",
+    "description": "Info popup row label: duration of the request."
+  },
+  "infoSeconds": {
+    "message": "$SECONDS$ s",
+    "description": "Duration in seconds.",
+    "placeholders": {
+      "seconds": {
+        "content": "$1",
+        "example": "2.4"
+      }
+    }
+  },
+  "infoInputTokens": {
+    "message": "Input tokens",
+    "description": "Info popup row label: tokens sent (image and prompt)."
+  },
+  "infoOutputTokens": {
+    "message": "Output tokens",
+    "description": "Info popup row label: tokens generated."
+  },
+  "infoOutputWithReasoning": {
+    "message": "$OUTPUT$ (incl. $REASONING$ for reasoning)",
+    "description": "Output tokens including hidden reasoning tokens.",
+    "placeholders": {
+      "output": {
+        "content": "$1",
+        "example": "812"
+      },
+      "reasoning": {
+        "content": "$2",
+        "example": "730"
+      }
+    }
+  },
+  "infoCost": {
+    "message": "Cost",
+    "description": "Info popup row label: cost reported by the provider."
+  },
+  "infoImage": {
+    "message": "Image sent",
+    "description": "Info popup row label: dimensions of the image sent to the provider."
+  },
+  "infoImageSize": {
+    "message": "$WIDTH$ × $HEIGHT$ px",
+    "description": "Image dimensions in pixels.",
+    "placeholders": {
+      "width": {
+        "content": "$1",
+        "example": "1568"
+      },
+      "height": {
+        "content": "$2",
+        "example": "1045"
+      }
+    }
+  },
+  "infoLength": {
+    "message": "Alt text",
+    "description": "Info popup row label: length of the generated alt text."
+  },
+  "infoCharacters": {
+    "message": "$COUNT$ characters",
+    "description": "Length of the alt text.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "214"
+      }
+    }
+  },
+  "infoOpenSettings": {
+    "message": "Open settings",
+    "description": "Link in the info popup that opens the Fediscribe settings."
+  },
+  "errorUnknown": {
+    "message": "Unexpected error: $DETAIL$",
+    "description": "Generic error message.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorMissingApiKey": {
+    "message": "No API key is set for the selected AI provider. Enter it in the Fediscribe settings.",
+    "description": "Error: the API key is missing."
+  },
+  "errorMissingModel": {
+    "message": "No model is selected for the selected AI provider. Choose one in the Fediscribe settings.",
+    "description": "Error: no model selected."
+  },
+  "errorAuth": {
+    "message": "The AI provider rejected the request (API key or access rights): $DETAIL$",
+    "description": "Error: HTTP 401/403 from the AI provider. The placeholder is the provider's own message.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorRateLimit": {
+    "message": "The AI provider reports too many requests or an exhausted quota: $DETAIL$",
+    "description": "Error: HTTP 429 from the AI provider.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorApi": {
+    "message": "The AI provider reported an error (HTTP $STATUS$): $DETAIL$",
+    "description": "Error: other HTTP error from the AI provider.",
+    "placeholders": {
+      "status": {
+        "content": "$2",
+        "example": "400"
+      },
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorNetwork": {
+    "message": "Network error: $DETAIL$",
+    "description": "Error: the request could not be sent (offline, DNS, blocked).",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorTimeout": {
+    "message": "The AI provider did not answer in time. Try again, choose a faster model or increase the timeout in the settings.",
+    "description": "Error: the request timed out."
+  },
+  "errorEmptyResponse": {
+    "message": "The AI provider returned no text ($DETAIL$).",
+    "description": "Error: the response contained no text. The placeholder is a technical reason, e.g. a finish reason.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorBlocked": {
+    "message": "The AI provider refused to describe this image ($DETAIL$).",
+    "description": "Error: the request was blocked by the provider's content filter.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorImageNotFound": {
+    "message": "No image was found in the dialog.",
+    "description": "Error: the image to describe could not be found."
+  },
+  "errorImageFetch": {
+    "message": "The image could not be loaded: $DETAIL$",
+    "description": "Error: downloading the image failed.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorImagePermission": {
+    "message": "Fediscribe has no access to the media server $DETAIL$. Add it to this Mastodon server in the Fediscribe settings.",
+    "description": "Error: missing permission for the media server. The placeholder is a host name.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "assets.example.social"
+      }
+    }
+  },
+  "errorImageUnsupported": {
+    "message": "The image cannot be processed: $DETAIL$",
+    "description": "Error: the image format is not supported or the image is too large.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorUnknownProvider": {
+    "message": "Unknown AI provider: $DETAIL$",
+    "description": "Error: invalid provider setting.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorExtensionUnavailable": {
+    "message": "Fediscribe is not reachable, probably because it was updated or reloaded. Reload this page and try again. ($DETAIL$)",
+    "description": "Error: the background script did not answer.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "errorNotMastodon": {
+    "message": "This does not seem to be a Mastodon server ($DETAIL$).",
+    "description": "Error when adding a server that is not a Mastodon server.",
+    "placeholders": {
+      "detail": {
+        "content": "$1",
+        "example": "Incorrect API key provided"
+      }
+    }
+  },
+  "optionsTitle": {
+    "message": "Fediscribe settings",
+    "description": "Title of the settings page."
+  },
+  "settingsSaved": {
+    "message": "Saved",
+    "description": "Short confirmation that a setting was saved."
+  },
+  "apiPermissionsMissing": {
+    "message": "Fediscribe needs permission to contact the AI providers' servers.",
+    "description": "Notice on the settings page when the permissions for the AI provider hosts are missing."
+  },
+  "apiPermissionsGrant": {
+    "message": "Grant permission",
+    "description": "Button that requests the permissions for the AI provider hosts."
+  },
+  "serversHeading": {
+    "message": "Mastodon servers",
+    "description": "Heading of the server section."
+  },
+  "serversHint": {
+    "message": "Fediscribe only runs on the servers listed here. Many servers deliver images from a separate media server; it is detected automatically and needs access as well.",
+    "description": "Explanation of the server section."
+  },
+  "serversEmpty": {
+    "message": "No server added yet.",
+    "description": "Shown when the server list is empty."
+  },
+  "serverDomainLabel": {
+    "message": "Add server",
+    "description": "Label of the input for the Mastodon server to add."
+  },
+  "serverDomainPlaceholder": {
+    "message": "e.g. mastodon.social",
+    "description": "Placeholder of the server domain input."
+  },
+  "serverDomainHint": {
+    "message": "Choose one of the most active servers from the joinmastodon.org directory or enter any Mastodon server. It is checked automatically.",
+    "description": "Hint below the server input with the drop-down list of popular servers."
+  },
+  "serverChecking": {
+    "message": "Checking $DOMAIN$…",
+    "description": "Status while checking a server.",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.social"
+      }
+    }
+  },
+  "serverInvalidDomain": {
+    "message": "Please enter a valid domain, e.g. mastodon.social.",
+    "description": "Error for an invalid server domain."
+  },
+  "serverFound": {
+    "message": "Mastodon server found: $TITLE$ (version $VERSION$)",
+    "description": "Result of a successful server check.",
+    "placeholders": {
+      "title": {
+        "content": "$1",
+        "example": "Example Social"
+      },
+      "version": {
+        "content": "$2",
+        "example": "4.4.0"
+      }
+    }
+  },
+  "serverMediaLabel": {
+    "message": "Media servers",
+    "description": "Label of the media server input."
+  },
+  "serverMediaPlaceholder": {
+    "message": "Host names, e.g. files.mastodon.social (leave empty if images come from the server itself)",
+    "description": "Placeholder of the media server input."
+  },
+  "serverMediaHint": {
+    "message": "Separate several hosts with spaces. Fediscribe will ask for permission to access the server and these hosts.",
+    "description": "Hint below the media server input."
+  },
+  "serverMediaDetected": {
+    "message": "Media server detected. Check the list below and add the server.",
+    "description": "Status after a media server was detected."
+  },
+  "serverMediaNotDetected": {
+    "message": "No separate media server detected. If the server's images come from another host, enter it here.",
+    "description": "Status when no media server was detected."
+  },
+  "serverInvalidMedia": {
+    "message": "Invalid host name: $HOSTS$",
+    "description": "Error for invalid media host names.",
+    "placeholders": {
+      "hosts": {
+        "content": "$1",
+        "example": "assets/example"
+      }
+    }
+  },
+  "serverAddButton": {
+    "message": "Add server",
+    "description": "Button that adds the checked server and requests the permissions."
+  },
+  "serverPermissionDenied": {
+    "message": "Permission was not granted; the server was not added.",
+    "description": "Error when the user declines the permission request."
+  },
+  "serverAdded": {
+    "message": "$DOMAIN$ added. Reload open tabs of this server to activate Fediscribe there.",
+    "description": "Confirmation after a server was added.",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.social"
+      }
+    }
+  },
+  "serverRemoved": {
+    "message": "$DOMAIN$ removed.",
+    "description": "Confirmation after a server was removed.",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.social"
+      }
+    }
+  },
+  "serverMediaHosts": {
+    "message": "Media servers: $HOSTS$",
+    "description": "List of media servers of a configured server.",
+    "placeholders": {
+      "hosts": {
+        "content": "$1",
+        "example": "assets.example.social"
+      }
+    }
+  },
+  "serverNoMediaHosts": {
+    "message": "No separate media server",
+    "description": "Shown for a server without a media server."
+  },
+  "serverPermissionMissing": {
+    "message": "Access permission missing; Fediscribe is inactive on this server.",
+    "description": "Warning for a server whose permission is missing."
+  },
+  "serverGrantButton": {
+    "message": "Grant access",
+    "description": "Button that requests the missing permission for a server."
+  },
+  "serverRemoveButton": {
+    "message": "Remove",
+    "description": "Button that removes a server."
+  },
+  "providerHeading": {
+    "message": "AI provider",
+    "description": "Heading of the provider section."
+  },
+  "providerLabel": {
+    "message": "Provider",
+    "description": "Label of the provider selection."
+  },
+  "providerOpenai": {
+    "message": "OpenAI",
+    "description": "Name of the provider OpenAI."
+  },
+  "providerAnthropic": {
+    "message": "Anthropic",
+    "description": "Name of the provider Anthropic."
+  },
+  "providerGemini": {
+    "message": "Google Gemini",
+    "description": "Name of the provider Google Gemini."
+  },
+  "providerOpenrouter": {
+    "message": "OpenRouter",
+    "description": "Name of the provider OpenRouter."
+  },
+  "apiKeyLabel": {
+    "message": "API key",
+    "description": "Label of the API key input."
+  },
+  "apiKeyShow": {
+    "message": "Show",
+    "description": "Checkbox that shows the API key in plain text."
+  },
+  "apiKeyHint": {
+    "message": "Stored only locally in this browser and sent only to the selected provider.",
+    "description": "Hint below the API key input."
+  },
+  "modelLabel": {
+    "message": "Model",
+    "description": "Label of the model selection."
+  },
+  "modelListLabel": {
+    "message": "Available models",
+    "description": "Accessible label of the model list."
+  },
+  "modelsReloadButton": {
+    "message": "Reload list",
+    "description": "Button that reloads the model list from the provider."
+  },
+  "modelPlaceholder": {
+    "message": "Search, e.g. \"flash lite\", or enter a model ID",
+    "description": "Placeholder of the searchable model field."
+  },
+  "modelHint": {
+    "message": "The list is loaded from the provider; type to search model IDs and names. You can also enter any model ID; the model must accept images.",
+    "description": "Hint below the model input."
+  },
+  "modelsNeedKey": {
+    "message": "Enter an API key to load the model list.",
+    "description": "Status when no API key is set."
+  },
+  "modelsLoading": {
+    "message": "Loading models…",
+    "description": "Status while the model list is loaded."
+  },
+  "modelsLoaded": {
+    "message": "$COUNT$ models available.",
+    "description": "Status after the model list was loaded.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "modelsNoMatch": {
+    "message": "No matching model. The text you entered is used as the model ID.",
+    "description": "Shown in the model drop-down when the search matches nothing."
+  },
+  "testConnectionButton": {
+    "message": "Test connection",
+    "description": "Button that sends a test image to the provider."
+  },
+  "testRunning": {
+    "message": "Sending a test image…",
+    "description": "Status while the connection test runs."
+  },
+  "testSuccess": {
+    "message": "Connection works. Description of the test image: $TEXT$",
+    "description": "Result of a successful connection test.",
+    "placeholders": {
+      "text": {
+        "content": "$1",
+        "example": "A tree on a green meadow under a blue sky with a yellow sun."
+      }
+    }
+  },
+  "altTextHeading": {
+    "message": "Alt text",
+    "description": "Heading of the alt-text section."
+  },
+  "languageLabel": {
+    "message": "Language of the alt texts",
+    "description": "Label of the language selection."
+  },
+  "languageAuto": {
+    "message": "Automatic",
+    "description": "Language option: detect the language automatically (post language, otherwise Mastodon interface language, otherwise English)."
+  },
+  "languageHint": {
+    "message": "Automatic uses the language selected for the post, otherwise the language of the Mastodon interface, otherwise English.",
+    "description": "Hint below the language selection explaining the \"Automatic\" option."
+  },
+  "advancedHeading": {
+    "message": "Advanced",
+    "description": "Heading of the advanced section."
+  },
+  "timeoutLabel": {
+    "message": "Timeout for AI requests (seconds)",
+    "description": "Label of the timeout input."
+  },
+  "debugLabel": {
+    "message": "Debug logging",
+    "description": "Checkbox that enables detailed console logging."
+  },
+  "debugHint": {
+    "message": "Writes detailed messages with the prefix [Fediscribe] to the browser console. Info messages and errors are always logged.",
+    "description": "Hint below the debug checkbox."
+  }
+}

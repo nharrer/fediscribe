@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="optionsTitle"></title>
+    <link rel="stylesheet" href="options.css">
+    <script type="module" src="options.js"></script>
+</head>
+<body>
+<main>
+    <header>
+        <img src="../icons/fediscribe.svg" alt="" width="40" height="40">
+        <h1 data-i18n="optionsTitle"></h1>
+    </header>
+
+    <section id="api-permissions" class="notice" hidden>
+        <p data-i18n="apiPermissionsMissing"></p>
+        <button type="button" id="api-permissions-grant" data-i18n="apiPermissionsGrant"></button>
+    </section>
+
+    <section>
+        <h2 data-i18n="serversHeading"></h2>
+        <p class="hint" data-i18n="serversHint"></p>
+        <ul id="server-list" class="server-list"></ul>
+        <p id="server-empty" class="hint" data-i18n="serversEmpty" hidden></p>
+
+        <div class="field">
+            <label for="server-domain" data-i18n="serverDomainLabel"></label>
+            <div class="row">
+                <input type="text" id="server-domain" list="server-suggestions" autocomplete="off" spellcheck="false" data-i18n-placeholder="serverDomainPlaceholder">
+                <button type="button" id="server-add" class="primary" data-i18n="serverAddButton" disabled></button>
+            </div>
+            <datalist id="server-suggestions"></datalist>
+            <p class="hint" data-i18n="serverDomainHint"></p>
+        </div>
+        <p id="server-status" class="status" role="status"></p>
+
+        <div id="server-check" class="panel" hidden>
+            <p id="server-check-result"></p>
+            <label for="server-media" data-i18n="serverMediaLabel"></label>
+            <input type="text" id="server-media" autocomplete="off" spellcheck="false" data-i18n-placeholder="serverMediaPlaceholder">
+            <p class="hint" data-i18n="serverMediaHint"></p>
+        </div>
+    </section>
+
+    <section>
+        <h2 data-i18n="providerHeading"></h2>
+
+        <div class="field">
+            <label for="provider" data-i18n="providerLabel"></label>
+            <select id="provider">
+                <option value="openai" data-i18n="providerOpenai"></option>
+                <option value="anthropic" data-i18n="providerAnthropic"></option>
+                <option value="gemini" data-i18n="providerGemini"></option>
+                <option value="openrouter" data-i18n="providerOpenrouter"></option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="api-key" data-i18n="apiKeyLabel"></label>
+            <div class="row">
+                <input type="password" id="api-key" autocomplete="off" spellcheck="false">
+                <label class="inline"><input type="checkbox" id="api-key-show"> <span data-i18n="apiKeyShow"></span></label>
+            </div>
+            <p class="hint" data-i18n="apiKeyHint"></p>
+        </div>
+
+        <div class="field">
+            <label for="model" data-i18n="modelLabel"></label>
+            <div class="row">
+                <div class="combobox">
+                    <input type="text" id="model" role="combobox" aria-autocomplete="list" aria-expanded="false"
+                           aria-controls="model-options" autocomplete="off" spellcheck="false"
+                           data-i18n-placeholder="modelPlaceholder">
+                    <ul id="model-options" class="combobox-list" role="listbox" data-i18n-aria-label="modelListLabel" hidden></ul>
+                </div>
+                <button type="button" id="models-reload" data-i18n="modelsReloadButton"></button>
+            </div>
+            <p class="hint" data-i18n="modelHint"></p>
+            <p id="models-status" class="status" role="status"></p>
+        </div>
+
+        <div class="field">
+            <button type="button" id="test-connection" data-i18n="testConnectionButton"></button>
+            <p id="test-status" class="status" role="status"></p>
+        </div>
+    </section>
+
+    <section>
+        <h2 data-i18n="altTextHeading"></h2>
+        <div class="field">
+            <label for="language" data-i18n="languageLabel"></label>
+            <select id="language"></select>
+            <p class="hint" data-i18n="languageHint"></p>
+        </div>
+    </section>
+
+    <section>
+        <h2 data-i18n="advancedHeading"></h2>
+        <div class="field">
+            <label for="timeout" data-i18n="timeoutLabel"></label>
+            <input type="number" id="timeout" min="10" max="600" step="5">
+        </div>
+        <div class="field">
+            <label class="inline"><input type="checkbox" id="debug"> <span data-i18n="debugLabel"></span></label>
+            <p class="hint" data-i18n="debugHint"></p>
+        </div>
+    </section>
+
+    <p id="saved-status" class="status saved" role="status"></p>
+</main>
+</body>
+</html>
